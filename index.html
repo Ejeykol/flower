@@ -5,26 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заказ цветов для сада</title>
     <style>
-        /* Стили для карточек цветов и корзины */
-        .flower-card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 8px;
-            text-align: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2d5016;
+            margin-bottom: 10px;
+        }
+        
+        .flower-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .flower-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .flower-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .flower-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .cart-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
         .cart-item {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
         }
+        
         .messenger-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
-        .whatsapp-btn { background: #25D366; color: white; padding: 15px; }
-        .telegram-btn { background: #0088cc; color: white; padding: 15px; }
+        
+        .whatsapp-btn, .telegram-btn, .sms-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: opacity 0.3s;
+        }
+        
+        .whatsapp-btn:hover, .telegram-btn:hover, .sms-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+        }
+        
+        .telegram-btn {
+            background: #0088cc;
+        }
+        
+        .sms-btn {
+            background: #666;
+        }
+        
+        .contact-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .phone-number {
+            font-size: 24px;
+            color: #2d5016;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .order-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            white-space: pre-line;
+        }
     </style>
 </head>
 <body>
@@ -33,39 +174,176 @@
         <p>Выберите понравившиеся цветы и отправьте заказ через мессенджер</p>
     </header>
 
-    <section id="flower-catalog">
-        <h2>Выберите цветы:</h2>
-        <div class="flower-card">
-            <h3>Розы красные</h3>
-            <img src="rose.jpg" width="100">
-            <input type="number" min="0" value="0" class="quantity">
-        </div>
-        <!-- больше карточек цветов -->
+    <section class="flower-catalog" id="flowerCatalog">
+        <!-- Цветы будут добавлены через JavaScript -->
     </section>
 
-    <section id="order-cart">
-        <h2>Ваш заказ:</h2>
-        <div id="cart-items"></div>
+    <section class="cart-section">
+        <h2>🛒 Ваш заказ:</h2>
+        <div id="cartItems"></div>
+        <div id="orderSummary" class="order-summary" style="display: none;"></div>
+        
         <div class="messenger-buttons">
             <button class="whatsapp-btn" onclick="sendViaWhatsApp()">
-                📱 Отправить в WhatsApp
+                📱 WhatsApp
             </button>
             <button class="telegram-btn" onclick="sendViaTelegram()">
-                ✈️ Отправить в Telegram
+                ✈️ Telegram
+            </button>
+            <button class="sms-btn" onclick="showSMSInstructions()">
+                💬 SMS
             </button>
         </div>
     </section>
 
-    <section id="contact">
-        <h3>Контакты</h3>
-        <p>Телефон: +7 XXX XXX-XX-XX</p>
+    <section class="contact-section">
+        <h3>📞 Контакты</h3>
+        <p class="phone-number">+7 (996) 133-73-21</p>
         <p><strong>Не пользуетесь мессенджерами?</strong></p>
         <p>Позвоните нам или отправьте SMS с вашим заказом</p>
     </section>
 
     <script>
-        // Здесь будет JavaScript для работы корзины
-        // и формирования сообщений для мессенджеров
+        // Данные о цветах
+        const flowers = [
+            { id: 1, name: "Розы красные", price: 300, emoji: "🌹" },
+            { id: 2, name: "Петунии белые", price: 150, emoji: "🌸" },
+            { id: 3, name: "Лилии розовые", price: 250, emoji: "💮" },
+            { id: 4, name: "Тюльпаны желтые", price: 200, emoji: "🌼" },
+            { id: 5, name: "Хризантемы", price: 180, emoji: "🌺" },
+            { id: 6, name: "Герберы", price: 220, emoji: "🌻" }
+        ];
+
+        // Корзина
+        let cart = {};
+
+        // Инициализация каталога цветов
+        function initFlowerCatalog() {
+            const catalog = document.getElementById('flowerCatalog');
+            
+            flowers.forEach(flower => {
+                const card = document.createElement('div');
+                card.className = 'flower-card';
+                card.innerHTML = `
+                    <div style="font-size: 40px;">${flower.emoji}</div>
+                    <h3>${flower.name}</h3>
+                    <p>${flower.price} руб./шт.</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(${flower.id})">-</button>
+                        <input type="number" id="qty-${flower.id}" class="quantity-input" value="0" min="0" readonly>
+                        <button class="quantity-btn" onclick="increaseQuantity(${flower.id})">+</button>
+                    </div>
+                `;
+                catalog.appendChild(card);
+                
+                // Инициализируем корзину
+                cart[flower.id] = 0;
+            });
+        }
+
+        // Функции для управления количеством
+        function increaseQuantity(flowerId) {
+            const input = document.getElementById(`qty-${flowerId}`);
+            input.value = parseInt(input.value) + 1;
+            cart[flowerId] = parseInt(input.value);
+            updateCart();
+        }
+
+        function decreaseQuantity(flowerId) {
+            const input = document.getElementById(`qty-${flowerId}`);
+            if (parseInt(input.value) > 0) {
+                input.value = parseInt(input.value) - 1;
+                cart[flowerId] = parseInt(input.value);
+                updateCart();
+            }
+        }
+
+        // Обновление корзины
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const orderSummary = document.getElementById('orderSummary');
+            let hasItems = false;
+            let total = 0;
+            
+            let cartHTML = '';
+            let summaryText = 'Здравствуйте! Хочу заказать цветы:\n\n';
+            
+            flowers.forEach(flower => {
+                if (cart[flower.id] > 0) {
+                    hasItems = true;
+                    const cost = cart[flower.id] * flower.price;
+                    total += cost;
+                    
+                    cartHTML += `
+                        <div class="cart-item">
+                            <span>${flower.emoji} ${flower.name}</span>
+                            <span>${cart[flower.id]} шт. × ${flower.price} руб. = ${cost} руб.</span>
+                        </div>
+                    `;
+                    
+                    summaryText += `${flower.emoji} ${flower.name} - ${cart[flower.id]} шт. (${cost} руб.)\n`;
+                }
+            });
+            
+            if (hasItems) {
+                cartHTML += `
+                    <div class="cart-item" style="font-weight: bold; border-top: 2px solid #2d5016;">
+                        <span>Итого:</span>
+                        <span>${total} руб.</span>
+                    </div>
+                `;
+                
+                summaryText += `\nОбщая сумма: ${total} руб.\n\nПожалуйста, свяжитесь со мной для уточнения деталей.`;
+                
+                orderSummary.textContent = summaryText;
+                orderSummary.style.display = 'block';
+            } else {
+                cartHTML = '<p>Корзина пуста</p>';
+                orderSummary.style.display = 'none';
+            }
+            
+            cartItems.innerHTML = cartHTML;
+        }
+
+        // Функции отправки заказа
+        function sendViaWhatsApp() {
+            const orderText = document.getElementById('orderSummary').textContent;
+            if (!orderText.includes('Общая сумма')) {
+                alert('Добавьте цветы в заказ перед отправкой!');
+                return;
+            }
+            
+            const phone = "79961337321"; // Замените на ваш номер (только цифры)
+            const encodedText = encodeURIComponent(orderText);
+            window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
+        }
+
+        function sendViaTelegram() {
+            const orderText = document.getElementById('orderSummary').textContent;
+            if (!orderText.includes('Общая сумма')) {
+                alert('Добавьте цветы в заказ перед отправкой!');
+                return;
+            }
+            
+            const encodedText = encodeURIComponent(orderText);
+            window.open(`https://t.me/share/url?text=${encodedText}`, '_blank');
+        }
+
+        function showSMSInstructions() {
+            const orderText = document.getElementById('orderSummary').textContent;
+            if (!orderText.includes('Общая сумма')) {
+                alert('Добавьте цветы в заказ перед отправкой!');
+                return;
+            }
+            
+            alert(`Скопируйте этот текст и отправьте SMS на номер +7 (996) 133-73-21:\n\n${orderText}`);
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initFlowerCatalog();
+            updateCart();
+        });
     </script>
 </body>
 </html>
