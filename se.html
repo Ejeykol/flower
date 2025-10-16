@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ цветов для сада</title>
+    <style>
+        /* Стили для карточек цветов и корзины */
+        .flower-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .messenger-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .whatsapp-btn { background: #25D366; color: white; padding: 15px; }
+        .telegram-btn { background: #0088cc; color: white; padding: 15px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌷 Заказ цветов для вашего сада</h1>
+        <p>Выберите понравившиеся цветы и отправьте заказ через мессенджер</p>
+    </header>
+
+    <section id="flower-catalog">
+        <h2>Выберите цветы:</h2>
+        <div class="flower-card">
+            <h3>Розы красные</h3>
+            <img src="rose.jpg" width="100">
+            <input type="number" min="0" value="0" class="quantity">
+        </div>
+        <!-- больше карточек цветов -->
+    </section>
+
+    <section id="order-cart">
+        <h2>Ваш заказ:</h2>
+        <div id="cart-items"></div>
+        <div class="messenger-buttons">
+            <button class="whatsapp-btn" onclick="sendViaWhatsApp()">
+                📱 Отправить в WhatsApp
+            </button>
+            <button class="telegram-btn" onclick="sendViaTelegram()">
+                ✈️ Отправить в Telegram
+            </button>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h3>Контакты</h3>
+        <p>Телефон: +7 XXX XXX-XX-XX</p>
+        <p><strong>Не пользуетесь мессенджерами?</strong></p>
+        <p>Позвоните нам или отправьте SMS с вашим заказом</p>
+    </section>
+
+    <script>
+        // Здесь будет JavaScript для работы корзины
+        // и формирования сообщений для мессенджеров
+    </script>
+</body>
+</html>
